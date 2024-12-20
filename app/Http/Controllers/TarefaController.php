@@ -31,12 +31,12 @@ class TarefaController extends Controller
     public function store(Request $request)
     {
         try {
+            $request->validate(['titulo' => 'required'], ['required' => 'Titulo obrigatório']);
             $tarefa = Tarefa::create($request->all());
 
-            return response()->json([$tarefa],201);
-        }
-        catch (\Exception $e) {
-            return response()->json(["error"=> $e->getMessage()],500);
+            return response()->json([$tarefa], 201);
+        } catch (\Exception $e) {
+            return response()->json(["error" => $e->getMessage()], 500);
         }
     }
 
@@ -46,15 +46,13 @@ class TarefaController extends Controller
     public function show($id)
     {
 
-            //code...
-            $tarefa = Tarefa::find($id);
-            if($tarefa){
-                return response()->json([$tarefa],302);
-            }else{
-                return response()->json(["error"=> "Não encontrada"],404);
-            }
-
-
+        //code...
+        $tarefa = Tarefa::find($id);
+        if ($tarefa) {
+            return response()->json([$tarefa], 302);
+        } else {
+            return response()->json(["error" => "Não encontrada"], 404);
+        }
     }
 
     /**
@@ -72,14 +70,15 @@ class TarefaController extends Controller
     {
         try {
             $tarefa = Tarefa::find($id);
-            if($tarefa){
+            if ($tarefa) {
+                $request->validate(['titulo' => 'required'], ['required' => 'Titulo obrigatório']);
                 $tarefa->update($request->all());
-                return response()->json([$tarefa],200);
-            }else{
-                return response()->json(["error"=> "Não encontrada"],404);
+                return response()->json([$tarefa], 200);
+            } else {
+                return response()->json(["error" => "Não encontrada"], 404);
             }
         } catch (\Throwable $th) {
-            return response()->json(["error"=> $th->getMessage()],500);
+            return response()->json(["error" => $th->getMessage()], 500);
         }
     }
 
@@ -89,11 +88,11 @@ class TarefaController extends Controller
     public function destroy($id)
     {
         $tarefa = Tarefa::find($id);
-        if($tarefa){
+        if ($tarefa) {
             $tarefa->delete();
-            return response()->json([$tarefa],200);
-        }else{
-            return response()->json(["error"=> "Não encontrada"],404);
+            return response()->json([$tarefa], 200);
+        } else {
+            return response()->json(["error" => "Não encontrada"], 404);
         }
     }
 }
